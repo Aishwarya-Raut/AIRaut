@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Enter AIraut | AIraut
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        .role-entry-page {
+            min-height: 100vh;
+            background: #faf9f5;
+            color: #102a43;
+        }
+
+        .login-header {
+            width: 100%;
+            padding: 38px 5vw;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-sizing: border-box;
+        }
+
+        .login-logo img {
+            width: 105px;
+            display: block;
+        }
+
+        .back-link {
+            color: #102a43;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .back-link:hover {
+            color: #008892;
+        }
+
+        .role-entry {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 105px 5vw 120px;
+        }
+
+        .role-entry-eyebrow {
+            color: #008892;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 28px;
+        }
+
+        .role-entry h1 {
+            max-width: 900px;
+            margin: 0;
+
+            font-size: clamp(
+                56px,
+                7vw,
+                94px
+            );
+
+            line-height: .94;
+            letter-spacing: -4px;
+            font-weight: 750;
+        }
+
+        .role-entry h1 span {
+            color: #008892;
+        }
+
+        .role-entry-intro {
+            max-width: 680px;
+            margin-top: 30px;
+
+            color: #526777;
+            font-size: 19px;
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+           ROLE SELECTOR
+        ========================================================= */
+
+        .role-section {
+            margin-top: 75px;
+        }
+
+        .role-section-heading {
+            padding: 22px 0;
+
+            border-top: 1px solid #dedbd2;
+            border-bottom: 1px solid #dedbd2;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .role-section-heading span:first-child {
+            color: #008892;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+        }
+
+        .role-section-heading span:last-child {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 16px;
+            margin-top: 35px;
+        }
+
+        .role-option {
+            position: relative;
+
+            min-height: 215px;
+            padding: 30px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #d9d5cb;
+            background: #fffefa;
+
+            text-align: left;
+            cursor: pointer;
+
+            transition:
+                border-color .25s ease,
+                background .25s ease,
+                transform .25s ease;
+        }
+
+        .role-option:hover {
+            border-color: #008892;
+            transform: translateY(-3px);
+        }
+
+        .role-option.active {
+            border-color: #008892;
+            background: #eaf6f5;
+        }
+
+        .role-option-number {
+            color: #c79d4d;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .role-option h2 {
+            margin: 42px 0 10px;
+            font-size: 25px;
+            letter-spacing: -.7px;
+        }
+
+        .role-option p {
+            margin: 0;
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .role-option-arrow {
+            position: absolute;
+            right: 25px;
+            bottom: 25px;
+            color: #008892;
+            font-size: 18px;
+        }
+
+
+        /* =========================================================
+           LOGIN PANEL
+        ========================================================= */
+
+        .login-panel {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+
+            margin-top: 55px;
+
+            border: 1px solid #d9d5cb;
+            background: #fffefa;
+        }
+
+        .login-panel-main {
+            padding: 48px;
+        }
+
+        .login-panel-context {
+            padding: 48px;
+
+            background: #e5f5f4;
+            border-left: 1px solid #dedbd2;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-context-label {
+            color: #008892;
+
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+
+            margin-bottom: 18px;
+        }
+
+        .login-context-title {
+            margin: 0;
+
+            font-size: 34px;
+            letter-spacing: -1px;
+        }
+
+        .login-context-text {
+            margin-top: 15px;
+
+            color: #526777;
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+           SELECTED PATHWAY
+        ========================================================= */
+
+        .selected-pathway {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 35px;
+
+            color: #008892;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .selected-pathway-mark {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #008892;
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .form-field label {
+            color: #102a43;
+
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .form-field input {
+            width: 100%;
+            box-sizing: border-box;
+
+            padding: 16px 18px;
+
+            border: 1px solid #d9d5cb;
+            background: #faf9f5;
+
+            color: #102a43;
+
+            font-family: inherit;
+            font-size: 16px;
+
+            outline: none;
+        }
+
+        .form-field input:focus {
+            border-color: #008892;
+        }
+
+        .login-submit {
+            margin-top: 8px;
+
+            padding: 16px 24px;
+
+            border: 1px solid #102a43;
+            background: #102a43;
+
+            color: white;
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: all .25s ease;
+        }
+
+        .login-submit:hover {
+            background: #008892;
+            border-color: #008892;
+        }
+
+        .login-submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .login-note {
+            margin-top: 22px;
+
+            color: #718096;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .login-note a {
+            color: #008892;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           ERROR MESSAGE
+        ========================================================= */
+
+        .login-error {
+            margin-bottom: 24px;
+
+            padding: 15px 17px;
+
+            border: 1px solid #e1d2bf;
+            background: #fff8ef;
+
+            color: #7a5a2a;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .login-footer {
+            max-width: 1280px;
+            margin: 0 auto;
+
+            padding: 35px 5vw 45px;
+
+            border-top: 1px solid #dedbd2;
+
+            color: #718096;
+            font-size: 14px;
+
+            box-sizing: border-box;
+        }
+
+        .login-footer strong {
+            color: #102a43;
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .role-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .login-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .login-panel-context {
+                border-left: none;
+
+                border-top: 1px solid #dedbd2;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .login-header {
+                padding: 25px 24px;
+            }
+
+            .role-entry {
+                padding: 80px 24px 90px;
+            }
+
+            .role-entry h1 {
+                font-size: clamp(
+                    48px,
+                    14vw,
+                    72px
+                );
+
+                letter-spacing: -3px;
+            }
+
+            .role-entry-intro {
+                font-size: 17px;
+            }
+
+            .role-section-heading {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-panel-main,
+            .login-panel-context {
+                padding: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="role-entry-page">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="login-header">
+
+        <a
+            href="platform.html"
+            class="login-logo"
+        >
+
+            <img
+                src="assets/airaut-logo.png"
+                alt="AIraut"
+            >
+
+        </a>
+
+
+        <a
+            href="platform.html"
+            class="back-link"
+        >
+            ← Back to AIraut
+        </a>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="role-entry">
+
+
+        <div class="role-entry-eyebrow">
+            AIraut PLATFORM
+        </div>
+
+
+        <h1>
+            Who are
+            <span>you?</span>
+        </h1>
+
+
+        <p class="role-entry-intro">
+
+            Choose your pathway to enter the AIraut platform.
+            Your access and dashboard are determined by your
+            authorised account.
+
+        </p>
+
+
+
+        <!-- =====================================================
+             ROLE SELECTOR
+        ====================================================== -->
+
+        <section class="role-section">
+
+
+            <div class="role-section-heading">
+
+                <span>
+                    CHOOSE YOUR PATHWAY
+                </span>
+
+                <span>
+                    Login access varies by role
+                </span>
+
+            </div>
+
+
+            <div class="role-grid">
+
+
+                <button
+                    type="button"
+                    class="role-option active"
+                    data-role="student"
+                    data-title="Your readiness journey starts here."
+                    data-eyebrow="STUDENT PATHWAY"
+                    data-description="Learn, explore and build through your AIraut readiness journey."
+                >
+
+                    <span class="role-option-number">
+                        01
+                    </span>
+
+                    <h2>
+                        Student
+                    </h2>
+
+                    <p>
+                        Learn. Explore. Build.
+                    </p>
+
+                    <span class="role-option-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="role-option"
+                    data-role="faculty"
+                    data-title="Support learning through evidence."
+                    data-eyebrow="FACULTY PATHWAY"
+                    data-description="Facilitate cohorts, review student work and provide meaningful feedback."
+                >
+
+                    <span class="role-option-number">
+                        02
+                    </span>
+
+                    <h2>
+                        Faculty
+                    </h2>
+
+                    <p>
+                        Facilitate. Review. Support.
+                    </p>
+
+                    <span class="role-option-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="role-option"
+                    data-role="institution"
+                    data-title="See readiness across your institution."
+                    data-eyebrow="INSTITUTION PATHWAY"
+                    data-description="View cohorts, participation and learner progress across your institution."
+                >
+
+                    <span class="role-option-number">
+                        03
+                    </span>
+
+                    <h2>
+                        Institution
+                    </h2>
+
+                    <p>
+                        View. Understand. Progress.
+                    </p>
+
+                    <span class="role-option-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="role-option"
+                    data-role="admin"
+                    data-title="Manage the AIraut system."
+                    data-eyebrow="ADMIN PATHWAY"
+                    data-description="Manage institutions, cohorts, programmes, users and system reporting."
+                >
+
+                    <span class="role-option-number">
+                        04
+                    </span>
+
+                    <h2>
+                        Admin
+                    </h2>
+
+                    <p>
+                        Manage. Monitor. Report.
+                    </p>
+
+                    <span class="role-option-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LOGIN PANEL
+        ====================================================== -->
+
+        <section class="login-panel">
+
+
+            <div class="login-panel-main">
+
+
+                <div class="selected-pathway">
+
+                    <span class="selected-pathway-mark"></span>
+
+                    <span id="pathwayEyebrow">
+                        STUDENT PATHWAY
+                    </span>
+
+                </div>
+
+
+
+                <div
+                    id="loginError"
+                    class="login-error"
+                    style="display:none;"
+                ></div>
+
+
+
+                <form
+                    class="login-form"
+                    action="auth/login.php"
+                    method="POST"
+                    id="loginForm"
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="role"
+                        id="selectedRole"
+                        value="student"
+                    >
+
+
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        id="csrfToken"
+                        value=""
+                    >
+
+
+                    <div class="form-field">
+
+                        <label for="login-email">
+                            Email
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="login-email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-field">
+
+                        <label for="login-password">
+                            Password
+                        </label>
+
+
+                        <input
+                            type="password"
+                            id="login-password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="login-submit"
+                        id="loginSubmit"
+                        disabled
+                    >
+                        Enter AIraut →
+                    </button>
+
+
+                </form>
+
+
+
+                <p class="login-note">
+
+                    Don't have access yet?
+
+                    <a href="index.html#contact">
+                        Talk to AIraut →
+                    </a>
+
+                </p>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CONTEXT
+            ================================================== -->
+
+            <div class="login-panel-context">
+
+
+                <div class="login-context-label">
+
+                    <span id="contextEyebrow">
+                        STUDENT PATHWAY
+                    </span>
+
+                </div>
+
+
+                <h2
+                    class="login-context-title"
+                    id="contextTitle"
+                >
+                    Your readiness journey starts here.
+                </h2>
+
+
+                <p
+                    class="login-context-text"
+                    id="contextDescription"
+                >
+                    Learn, explore and build through your AIraut
+                    readiness journey.
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="login-footer">
+
+        <strong>
+            AIraut
+        </strong>
+
+        — Future Readiness Development System
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+    /* =========================================================
+       ROLE ELEMENTS
+    ========================================================= */
+
+    const roleOptions =
+        document.querySelectorAll(
+            '.role-option'
+        );
+
+
+    const selectedRole =
+        document.getElementById(
+            'selectedRole'
+        );
+
+
+    const pathwayEyebrow =
+        document.getElementById(
+            'pathwayEyebrow'
+        );
+
+
+    const contextEyebrow =
+        document.getElementById(
+            'contextEyebrow'
+        );
+
+
+    const contextTitle =
+        document.getElementById(
+            'contextTitle'
+        );
+
+
+    const contextDescription =
+        document.getElementById(
+            'contextDescription'
+        );
+
+
+    const loginError =
+        document.getElementById(
+            'loginError'
+        );
+
+
+    const csrfTokenInput =
+        document.getElementById(
+            'csrfToken'
+        );
+
+
+    const loginSubmit =
+        document.getElementById(
+            'loginSubmit'
+        );
+
+
+    /* =========================================================
+       ROLE ACTIVATION
+    ========================================================= */
+
+    function activateRole(
+        option
+    ) {
+
+        if (!option) {
+            return;
+        }
+
+
+        roleOptions.forEach(
+            function (item) {
+
+                item.classList.remove(
+                    'active'
+                );
+
+            }
+        );
+
+
+        option.classList.add(
+            'active'
+        );
+
+
+        const role =
+            option.getAttribute(
+                'data-role'
+            );
+
+
+        const eyebrow =
+            option.getAttribute(
+                'data-eyebrow'
+            );
+
+
+        const title =
+            option.getAttribute(
+                'data-title'
+            );
+
+
+        const description =
+            option.getAttribute(
+                'data-description'
+            );
+
+
+        /*
+         * Hidden POST field.
+         */
+
+        if (selectedRole) {
+
+            selectedRole.value =
+                role;
+
+        }
+
+
+        /*
+         * Update visible pathway.
+         */
+
+        if (pathwayEyebrow) {
+
+            pathwayEyebrow.textContent =
+                eyebrow;
+
+        }
+
+
+        if (contextEyebrow) {
+
+            contextEyebrow.textContent =
+                eyebrow;
+
+        }
+
+
+        if (contextTitle) {
+
+            contextTitle.textContent =
+                title;
+
+        }
+
+
+        if (contextDescription) {
+
+            contextDescription.textContent =
+                description;
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       ROLE CLICK
+    ========================================================= */
+
+    roleOptions.forEach(
+        function (option) {
+
+            option.addEventListener(
+                'click',
+                function () {
+
+                    activateRole(
+                        this
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =========================================================
+       RESTORE ROLE AFTER LOGIN ERROR
+    ========================================================= */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const error =
+        params.get('error');
+
+
+    const returnedRole =
+        params.get('role');
+
+
+    /*
+     * If PHP returned the selected role after
+     * a failed login, restore that exact pathway.
+     */
+
+    if (returnedRole) {
+
+        const matchingOption =
+            document.querySelector(
+                '.role-option[data-role="'
+                + returnedRole
+                + '"]'
+            );
+
+
+        if (matchingOption) {
+
+            activateRole(
+                matchingOption
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       ERROR MESSAGES
+    ========================================================= */
+
+    const errorMessages = {
+
+        empty:
+            'Please enter your email and password.',
+
+        invalid:
+            'The email or password is incorrect.',
+
+        inactive:
+            'This account is currently inactive.',
+
+        role_required:
+            'Please choose a pathway before signing in.',
+
+        role_mismatch:
+            'This account is registered for a different AIraut pathway. Please select the correct role and try again.',
+
+        role:
+            'This account does not have a valid AIraut role.',
+
+        csrf:
+            'Your login session could not be verified. Please refresh the page and try again.'
+
+    };
+
+
+    if (
+        error
+        && loginError
+        && errorMessages[error]
+    ) {
+
+        loginError.textContent =
+            errorMessages[error];
+
+        loginError.style.display =
+            'block';
+
+    }
+
+
+
+    /* =========================================================
+       LOAD CSRF TOKEN
+    ========================================================= */
+
+    fetch(
+        '/auth/csrf-token.php',
+        {
+            method: 'GET',
+            credentials: 'same-origin',
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }
+    )
+    .then(
+        function (response) {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    'Unable to load security token.'
+                );
+
+            }
+
+            return response.json();
+
+        }
+    )
+    .then(
+        function (data) {
+
+            if (
+                !data
+                || typeof data.csrf_token !== 'string'
+                || data.csrf_token === ''
+            ) {
+
+                throw new Error(
+                    'Invalid security token.'
+                );
+
+            }
+
+
+            csrfTokenInput.value =
+                data.csrf_token;
+
+
+            loginSubmit.disabled =
+                false;
+
+        }
+    )
+    .catch(
+        function () {
+
+            loginSubmit.disabled =
+                true;
+
+            loginError.textContent =
+                'Unable to prepare secure login. Please refresh the page and try again.';
+
+            loginError.style.display =
+                'block';
+
+        }
+    );
+
+
+
+    /* =========================================================
+       FORM SUBMIT SAFETY CHECK
+    ========================================================= */
+
+    const loginForm =
+        document.getElementById(
+            'loginForm'
+        );
+
+
+    loginForm.addEventListener(
+        'submit',
+        function (event) {
+
+            if (
+                !csrfTokenInput.value
+            ) {
+
+                event.preventDefault();
+
+                loginError.textContent =
+                    'Your secure login session is not ready. Please wait a moment and try again.';
+
+                loginError.style.display =
+                    'block';
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

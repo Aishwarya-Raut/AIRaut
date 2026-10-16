@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AIraut — Platform</title>
+
+    <style>
+        /* =========================================
+           AIraut PLATFORM GATEWAY
+           "WHO ARE YOU?"
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #faf9f5;
+            color: #102a43;
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           PLATFORM HEADER
+        ========================================= */
+
+        .platform-header {
+            width: 100%;
+            padding: 28px 6vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .platform-logo img {
+            width: 105px;
+            height: auto;
+            display: block;
+        }
+
+        .back-link {
+            color: #526777;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color .25s ease;
+        }
+
+        .back-link:hover {
+            color: #008892;
+        }
+
+        /* =========================================
+           PLATFORM MAIN
+        ========================================= */
+
+        .platform-main {
+            min-height: calc(100vh - 90px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 70px 6vw 100px;
+        }
+
+        .platform-inner {
+            width: 100%;
+            max-width: 1180px;
+        }
+
+        /* =========================================
+           INTRO
+        ========================================= */
+
+        .platform-intro {
+            max-width: 720px;
+            margin-bottom: 70px;
+        }
+
+        .platform-eyebrow {
+            color: #008892;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 22px;
+        }
+
+        .platform-intro h1 {
+            font-size: clamp(52px, 7vw, 88px);
+            line-height: .94;
+            letter-spacing: -4px;
+            font-weight: 750;
+        }
+
+        .platform-intro h1 span {
+            color: #008892;
+        }
+
+        .platform-intro p {
+            margin-top: 25px;
+            max-width: 540px;
+            color: #526777;
+            font-size: 18px;
+            line-height: 1.65;
+        }
+
+        /* =========================================
+           ROLE PATHWAYS
+        ========================================= */
+
+        .role-pathways {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid #dcd8ce;
+            border-bottom: 1px solid #dcd8ce;
+        }
+
+        .role {
+            position: relative;
+            min-height: 250px;
+            padding: 32px 28px 35px;
+            text-decoration: none;
+            color: #102a43;
+            border-right: 1px solid #dcd8ce;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition:
+                background .3s ease,
+                transform .3s ease;
+        }
+
+        .role:last-child {
+            border-right: none;
+        }
+
+        .role::after {
+            content: "";
+            position: absolute;
+            left: 28px;
+            right: 28px;
+            bottom: 0;
+            height: 3px;
+            background: #008892;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .35s ease;
+        }
+
+        .role:hover {
+            background: #f2f8f6;
+        }
+
+        .role:hover::after {
+            transform: scaleX(1);
+        }
+
+        .role-number {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #c79d4d;
+            font-weight: 700;
+        }
+
+        .role-name {
+            margin-top: auto;
+            font-size: 29px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .role-description {
+            margin-top: 10px;
+            color: #526777;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .role-arrow {
+            position: absolute;
+            right: 28px;
+            bottom: 30px;
+            font-size: 22px;
+            color: #008892;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition:
+                opacity .3s ease,
+                transform .3s ease;
+        }
+
+        .role:hover .role-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* =========================================
+           PLATFORM FOOTNOTE
+        ========================================= */
+
+        .platform-note {
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #718096;
+            font-size: 12px;
+        }
+
+        .platform-note strong {
+            color: #102a43;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .platform-main {
+                padding-top: 50px;
+            }
+
+            .role-pathways {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .role:nth-child(2) {
+                border-right: none;
+            }
+
+            .role:nth-child(-n+2) {
+                border-bottom: 1px solid #dcd8ce;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .platform-header {
+                padding: 22px 24px;
+            }
+
+            .platform-main {
+                padding: 50px 24px 70px;
+            }
+
+            .platform-intro {
+                margin-bottom: 50px;
+            }
+
+            .platform-intro h1 {
+                font-size: clamp(48px, 15vw, 68px);
+                letter-spacing: -3px;
+            }
+
+            .platform-intro p {
+                font-size: 16px;
+            }
+
+            .role-pathways {
+                grid-template-columns: 1fr;
+            }
+
+            .role {
+                min-height: 190px;
+                border-right: none;
+                border-bottom: 1px solid #dcd8ce;
+            }
+
+            .role:last-child {
+                border-bottom: none;
+            }
+
+            .role:nth-child(-n+2) {
+                border-bottom: 1px solid #dcd8ce;
+            }
+
+            .platform-note {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         PLATFORM HEADER
+    ========================================= -->
+
+    <header class="platform-header">
+
+        <a href="index.html" class="platform-logo">
+            <img src="assets/airaut-logo.png" alt="AIraut">
+        </a>
+
+        <a href="index.html" class="back-link">
+            ← Back to AIraut
+        </a>
+
+    </header>
+
+
+    <!-- =========================================
+         PLATFORM GATEWAY — WHO ARE YOU
+    ========================================= -->
+
+    <main class="platform-main">
+
+        <div class="platform-inner">
+
+            <section class="platform-intro">
+
+                <div class="platform-eyebrow">
+                    AIraut PLATFORM
+                </div>
+
+                <h1>
+                    Who are<br>
+                    <span>you?</span>
+                </h1>
+
+                <p>
+                    Choose your pathway into AIraut.
+                </p>
+
+            </section>
+
+
+            <!-- =========================================
+                 ROLE PATHWAYS
+            ========================================= -->
+
+            <section class="role-pathways">
+
+                <a href="student-login.html?role=student" class="role" data-role="student">
+
+                    <span class="role-number">01</span>
+
+                    <div>
+                        <h2 class="role-name">Student</h2>
+
+                        <p class="role-description">
+                            Learn. Explore. Build.
+                        </p>
+                    </div>
+
+                    <span class="role-arrow">→</span>
+
+                </a>
+
+
+                <a href="student-login.html?role=faculty" class="role" data-role="faculty">
+
+                    <span class="role-number">02</span>
+
+                    <div>
+                        <h2 class="role-name">Faculty</h2>
+
+                        <p class="role-description">
+                            Facilitate. Guide. Support.
+                        </p>
+                    </div>
+
+                    <span class="role-arrow">→</span>
+
+                </a>
+
+
+                <a href="student-login.html?role=institution" class="role" data-role="institution">
+
+                    <span class="role-number">03</span>
+
+                    <div>
+                        <h2 class="role-name">Institution</h2>
+
+                        <p class="role-description">
+                            Enable. Track. Grow.
+                        </p>
+                    </div>
+
+                    <span class="role-arrow">→</span>
+
+                </a>
+
+
+                <a href="student-login.html?role=admin" class="role" data-role="admin">
+
+                    <span class="role-number">04</span>
+
+                    <div>
+                        <h2 class="role-name">Admin</h2>
+
+                        <p class="role-description">
+                            Manage. Monitor. Scale.
+                        </p>
+                    </div>
+
+                    <span class="role-arrow">→</span>
+
+                </a>
+
+            </section>
+
+
+            <!-- =========================================
+                 PLATFORM FOOTNOTE
+            ========================================= -->
+
+            <div class="platform-note">
+
+                <span>
+                    <strong>AIraut</strong> — Future Readiness Development System
+                </span>
+
+                <span>
+                    Your pathway starts here.
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- Role cards now navigate directly to the unified login page. -->
+
+</body>
+</html>

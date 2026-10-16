@@ -1,0 +1,5 @@
+Options -Indexes
+
+<FilesMatch "^(\.env|\.htaccess|composer\.(json|lock)|.*\.(sql|log|bak|backup|old|orig|dist))$">
+    Require all denied
+</FilesMatch>

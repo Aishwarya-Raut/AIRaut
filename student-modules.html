@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Modules — AIraut</title>
+
+    <style>
+        :root {
+            --navy: #102d49;
+            --teal: #0793a0;
+            --gold: #d6a329;
+            --cream: #fbfaf6;
+            --line: #dddcd5;
+            --muted: #55708c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+
+        .topbar {
+            width: min(1400px, calc(100% - 80px));
+            margin: 0 auto;
+            padding: 32px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            width: 105px;
+            height: auto;
+            display: block;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .role {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--teal);
+        }
+
+        .back-link {
+            font-size: 15px;
+            font-weight: 700;
+            transition: color 0.25s ease;
+        }
+
+        .back-link:hover {
+            color: var(--teal);
+        }
+
+        /* HERO */
+
+        .page {
+            width: min(1400px, calc(100% - 80px));
+            margin: 0 auto;
+        }
+
+        .intro {
+            padding: 80px 0 95px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: var(--teal);
+            margin-bottom: 34px;
+        }
+
+        h1 {
+            max-width: 850px;
+            font-size: clamp(64px, 7vw, 108px);
+            line-height: 0.94;
+            letter-spacing: -5px;
+            font-weight: 750;
+        }
+
+        h1 span {
+            color: var(--teal);
+        }
+
+        .intro-text {
+            margin-top: 34px;
+            font-size: 19px;
+            line-height: 1.6;
+            color: var(--muted);
+            max-width: 570px;
+        }
+
+        /* MODULE AREA */
+
+        .modules-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 75px 0 28px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--teal);
+        }
+
+        .module-count {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* MODULE ROW */
+
+        .module-list {
+            border-top: 1px solid var(--line);
+        }
+
+        .module {
+            min-height: 185px;
+            border-bottom: 1px solid var(--line);
+
+            display: grid;
+            grid-template-columns: 90px 1fr 180px 50px;
+            align-items: center;
+            gap: 30px;
+
+            padding: 28px 18px;
+
+            transition:
+                background 0.3s ease,
+                padding 0.3s ease;
+        }
+
+        .module:hover {
+            background: #f1f9f8;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .number {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--gold);
+        }
+
+        .module-title {
+            font-size: 31px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .module-description {
+            margin-top: 9px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .status {
+            justify-self: start;
+            padding: 9px 15px;
+            border: 1px solid #cfcfc7;
+            border-radius: 100px;
+
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .arrow {
+            font-size: 27px;
+            color: var(--teal);
+            transition: transform 0.25s ease;
+        }
+
+        .module:hover .arrow {
+            transform: translateX(7px);
+        }
+
+        /* EMPTY / FUTURE MODULE */
+
+        .module-placeholder {
+            margin-top: 55px;
+            padding: 55px;
+            background: #e8f6f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .placeholder-title {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .placeholder-text {
+            margin-top: 8px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .placeholder-mark {
+            width: 70px;
+            height: 70px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        /* FOOTER */
+
+        footer {
+            width: min(1400px, calc(100% - 80px));
+            margin: 90px auto 0;
+            padding: 28px 0 45px;
+            border-top: 1px solid var(--line);
+
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: var(--navy);
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .topbar,
+            .page,
+            footer {
+                width: min(100% - 40px, 1400px);
+            }
+
+            .topbar {
+                padding: 22px 0;
+            }
+
+            .top-right {
+                gap: 15px;
+            }
+
+            .role {
+                display: none;
+            }
+
+            .intro {
+                padding: 60px 0 65px;
+            }
+
+            h1 {
+                font-size: 58px;
+                letter-spacing: -3px;
+            }
+
+            .modules-heading {
+                padding-top: 55px;
+            }
+
+            .module {
+                grid-template-columns: 50px 1fr 35px;
+                gap: 15px;
+                padding: 28px 0;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .module-title {
+                font-size: 25px;
+            }
+
+            .module-placeholder {
+                padding: 30px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <a href="student-dashboard.php">
+            <img
+                src="assets/airaut-logo.png"
+                alt="AIraut"
+                class="logo"
+            >
+        </a>
+
+        <div class="top-right">
+            <span class="role">STUDENT</span>
+
+            <a href="student-dashboard.php" class="back-link">
+                ← Back to AIraut
+            </a>
+        </div>
+
+    </header>
+
+
+    <main class="page">
+
+        <!-- INTRO -->
+
+        <section class="intro">
+
+            <div class="eyebrow">
+                MY MODULES
+            </div>
+
+            <h1>
+                Learn what<br>
+                comes <span>next.</span>
+            </h1>
+
+            <p class="intro-text">
+                Explore the learning experiences available to you
+                and move through your readiness journey at your own pace.
+            </p>
+
+        </section>
+
+
+        <!-- MODULES -->
+
+        <section>
+
+            <div class="modules-heading">
+
+                <div class="section-label">
+                    YOUR LEARNING
+                </div>
+
+                <div class="module-count">
+                    Your assigned modules
+                </div>
+
+            </div>
+
+
+            <div class="module-list">
+
+                <!-- MODULE 01 -->
+
+                <a href="#" class="module">
+
+                    <div class="number">
+                        01
+                    </div>
+
+                    <div>
+                        <div class="module-title">
+                            Module
+                        </div>
+
+                        <div class="module-description">
+                            Your learning experience will appear here.
+                        </div>
+                    </div>
+
+                    <div class="status">
+                        Not started
+                    </div>
+
+                    <div class="arrow">
+                        →
+                    </div>
+
+                </a>
+
+
+                <!-- MODULE 02 -->
+
+                <a href="#" class="module">
+
+                    <div class="number">
+                        02
+                    </div>
+
+                    <div>
+                        <div class="module-title">
+                            Module
+                        </div>
+
+                        <div class="module-description">
+                            Your next learning experience will appear here.
+                        </div>
+                    </div>
+
+                    <div class="status">
+                        Not started
+                    </div>
+
+                    <div class="arrow">
+                        →
+                    </div>
+
+                </a>
+
+
+                <!-- MODULE 03 -->
+
+                <a href="#" class="module">
+
+                    <div class="number">
+                        03
+                    </div>
+
+                    <div>
+                        <div class="module-title">
+                            Module
+                        </div>
+
+                        <div class="module-description">
+                            Continue developing your readiness through experience.
+                        </div>
+                    </div>
+
+                    <div class="status">
+                        Not started
+                    </div>
+
+                    <div class="arrow">
+                        →
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- FUTURE BACKEND CONNECTION -->
+
+            <div class="module-placeholder">
+
+                <div>
+                    <div class="placeholder-title">
+                        Your journey will grow here.
+                    </div>
+
+                    <div class="placeholder-text">
+                        Modules assigned by your institution will appear
+                        in this space.
+                    </div>
+                </div>
+
+                <div class="placeholder-mark">
+                    +
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div>
+            <strong>AIraut</strong>
+            — Future Readiness Development System
+        </div>
+
+        <a href="student-dashboard.php">
+            ← Student Dashboard
+        </a>
+
+    </footer>
+
+</body>
+</html>

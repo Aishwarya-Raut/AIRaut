@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Modules — AIraut</title>
+
+    <style>
+        :root {
+            --navy: #102d48;
+            --teal: #0793a0;
+            --gold: #d9a441;
+            --cream: #f8f7f2;
+            --white: #fffefa;
+            --muted: #607a97;
+            --line: #dddcd5;
+            --soft-teal: #e7f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ---------------- HEADER ---------------- */
+
+        header {
+            width: 100%;
+            padding: 30px 6vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 105px;
+            height: auto;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 38px;
+        }
+
+        .role {
+            font-size: 13px;
+            letter-spacing: 5px;
+            font-weight: 700;
+            color: var(--teal);
+        }
+
+        .back-link {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--teal);
+        }
+
+        /* ---------------- MAIN ---------------- */
+
+        main {
+            width: min(1360px, 87vw);
+            margin: 0 auto;
+        }
+
+        /* ---------------- HERO ---------------- */
+
+        .hero {
+            padding: 55px 0 115px;
+            max-width: 900px;
+        }
+
+        .eyebrow {
+            color: var(--teal);
+            font-size: 13px;
+            letter-spacing: 6px;
+            font-weight: 700;
+            margin-bottom: 38px;
+        }
+
+        .hero h1 {
+            font-size: clamp(64px, 7vw, 108px);
+            line-height: 0.94;
+            letter-spacing: -5px;
+            font-weight: 750;
+            margin-bottom: 42px;
+        }
+
+        .hero h1 span {
+            color: var(--teal);
+        }
+
+        .hero p {
+            max-width: 760px;
+            font-size: 22px;
+            line-height: 1.65;
+            color: var(--muted);
+        }
+
+        /* ---------------- SECTION HEADER ---------------- */
+
+        .section-header {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 27px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 13px;
+            letter-spacing: 5px;
+            font-weight: 700;
+            color: var(--teal);
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        /* ---------------- MODULE JOURNEY ---------------- */
+
+        .modules {
+            background: var(--white);
+            border-left: 1px solid var(--line);
+            border-right: 1px solid var(--line);
+        }
+
+        .module {
+            min-height: 170px;
+            display: grid;
+            grid-template-columns: 125px 1fr 230px;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            padding: 30px 55px;
+            transition: background 0.3s ease;
+        }
+
+        .module:hover {
+            background: #f2f8f7;
+        }
+
+        .module-number {
+            color: var(--gold);
+            font-size: 15px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .module-content h2 {
+            font-size: 29px;
+            letter-spacing: -1px;
+            margin-bottom: 7px;
+        }
+
+        .module-content p {
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .module-action {
+            justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .module-action span {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 43px;
+            height: 43px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            color: var(--gold);
+            font-size: 20px;
+            transition: all 0.25s ease;
+        }
+
+        .module:hover .module-action span {
+            background: var(--gold);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        /* ---------------- CAPSTONE ---------------- */
+
+        .capstone-wrap {
+            padding: 100px 0 120px;
+        }
+
+        .capstone {
+            background: var(--soft-teal);
+            padding: 65px 60px;
+            display: grid;
+            grid-template-columns: 130px 1fr 210px;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .capstone-number {
+            color: var(--gold);
+            font-size: 15px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .capstone-content h2 {
+            font-size: clamp(38px, 4vw, 58px);
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+
+        .capstone-content h2 span {
+            color: var(--teal);
+        }
+
+        .capstone-content p {
+            max-width: 690px;
+            font-size: 18px;
+            color: #486984;
+        }
+
+        .capstone-button {
+            justify-self: end;
+            background: var(--navy);
+            color: white;
+            padding: 17px 25px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        .capstone-button:hover {
+            background: var(--teal);
+            transform: translateX(5px);
+        }
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 45px 0 65px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        footer strong {
+            color: var(--navy);
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 800px) {
+
+            header {
+                padding: 24px 6vw;
+            }
+
+            .header-right {
+                gap: 18px;
+            }
+
+            .role {
+                display: none;
+            }
+
+            main {
+                width: 88vw;
+            }
+
+            .hero {
+                padding: 45px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 62px;
+                letter-spacing: -3px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+            .module {
+                grid-template-columns: 60px 1fr;
+                padding: 30px 25px;
+                gap: 10px;
+            }
+
+            .module-action {
+                grid-column: 2;
+                justify-self: start;
+                margin-top: 15px;
+            }
+
+            .capstone {
+                grid-template-columns: 1fr;
+                padding: 45px 30px;
+            }
+
+            .capstone-button {
+                justify-self: start;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+
+        <!-- Replace this filename if your actual logo has a different name -->
+        <a href="student-dashboard.php">
+            <img
+                src="assets/airaut-logo.png"
+                alt="AIraut"
+                class="logo"
+            >
+        </a>
+
+        <div class="header-right">
+            <div class="role">STUDENT</div>
+
+            <a href="student-dashboard.php" class="back-link">
+                ← Student Dashboard
+            </a>
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero">
+
+            <div class="eyebrow">
+                MY MODULES
+            </div>
+
+            <h1>
+                Build what<br>
+                you're <span>ready</span><br>
+                to do.
+            </h1>
+
+            <p>
+                Your development journey brings together experiences,
+                activities and reflection across twelve modules —
+                ending with a Future Ready Challenge.
+            </p>
+
+        </section>
+
+
+        <!-- MODULE HEADER -->
+        <div class="section-header">
+
+            <div class="section-title">
+                YOUR DEVELOPMENT JOURNEY
+            </div>
+
+            <div class="section-description">
+                Explore. Apply. Reflect. Grow.
+            </div>
+
+        </div>
+
+
+        <!-- MODULES -->
+        <section class="modules">
+
+
+            <!-- M01 -->
+            <a href="#" class="module">
+
+                <div class="module-number">01</div>
+
+                <div class="module-content">
+                    <h2>Self &amp; Strengths</h2>
+                    <p>Self-awareness</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M02 -->
+            <a href="#" class="module">
+
+                <div class="module-number">02</div>
+
+                <div class="module-content">
+                    <h2>Confidence in Expression</h2>
+                    <p>Confidence</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M03 -->
+            <a href="#" class="module">
+
+                <div class="module-number">03</div>
+
+                <div class="module-content">
+                    <h2>Communication in Action</h2>
+                    <p>Communication</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M04 -->
+            <a href="#" class="module">
+
+                <div class="module-number">04</div>
+
+                <div class="module-content">
+                    <h2>Asking Better Questions</h2>
+                    <p>Curiosity</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M05 -->
+            <a href="#" class="module">
+
+                <div class="module-number">05</div>
+
+                <div class="module-content">
+                    <h2>Critical Thinking &amp; Decision Making</h2>
+                    <p>Critical thinking</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M06 -->
+            <a href="#" class="module">
+
+                <div class="module-number">06</div>
+
+                <div class="module-content">
+                    <h2>Creative Problem Solving</h2>
+                    <p>Creativity &amp; problem-solving</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M07 -->
+            <a href="#" class="module">
+
+                <div class="module-number">07</div>
+
+                <div class="module-content">
+                    <h2>Working With Others</h2>
+                    <p>Collaboration</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M08 -->
+            <a href="#" class="module">
+
+                <div class="module-number">08</div>
+
+                <div class="module-content">
+                    <h2>Contribution &amp; Team Responsibility</h2>
+                    <p>Contribution</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M09 -->
+            <a href="#" class="module">
+
+                <div class="module-number">09</div>
+
+                <div class="module-content">
+                    <h2>Leadership Through Action</h2>
+                    <p>Leadership</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M10 -->
+            <a href="#" class="module">
+
+                <div class="module-number">10</div>
+
+                <div class="module-content">
+                    <h2>Professional Readiness</h2>
+                    <p>Workplace / future readiness</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M11 -->
+            <a href="#" class="module">
+
+                <div class="module-number">11</div>
+
+                <div class="module-content">
+                    <h2>AI &amp; Responsible Future Readiness</h2>
+                    <p>AI + responsible use</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+
+            <!-- M12 -->
+            <a href="#" class="module">
+
+                <div class="module-number">12</div>
+
+                <div class="module-content">
+                    <h2>Real-World Challenge Project</h2>
+                    <p>Application</p>
+                </div>
+
+                <div class="module-action">
+                    Start Module
+                    <span>→</span>
+                </div>
+
+            </a>
+
+        </section>
+
+
+        <!-- CAPSTONE -->
+        <section class="capstone-wrap">
+
+            <div class="capstone">
+
+                <div class="capstone-number">
+                    13
+                </div>
+
+                <div class="capstone-content">
+
+                    <h2>
+                        Future Ready<br>
+                        <span>Challenge.</span>
+                    </h2>
+
+                    <p>
+                        Bring your learning together through a capstone
+                        project that asks you to apply what you have
+                        developed to a real-world challenge.
+                    </p>
+
+                </div>
+
+                <a href="#" class="capstone-button">
+                    View Capstone →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+
+            <div>
+                <strong>AIraut</strong>
+                — Future Readiness Development System
+            </div>
+
+            <a href="student-dashboard.php">
+                ← Student Dashboard
+            </a>
+
+        </footer>
+
+    </main>
+
+</body>
+</html>
