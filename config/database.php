@@ -8,10 +8,10 @@
  * Do not use your local MySQL credentials here.
  */
 
-$host = 'REPLACE_WITH_HOSTINGER_DB_HOST';
-$dbname = 'REPLACE_WITH_HOSTINGER_DB_NAME';
-$username = 'REPLACE_WITH_HOSTINGER_DB_USERNAME';
-$password = 'REPLACE_WITH_NEW_DATABASE_PASSWORD';
+$host = 'srv1258.hstgr.io';
+$dbname = 'u544072317_airaut_mvp';
+$username = 'u544072317_airaut_app';
+$password = 'Airaut@2026#databasepass';
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
