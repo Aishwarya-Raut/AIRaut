@@ -1,550 +1,195 @@
--- phpMyAdmin SQL Dump
--- version 5.2.2
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1:3306
--- Generation Time: Oct 19, 2026 at 09:49 AM
--- Server version: 11.8.9-MariaDB-log
--- PHP Version: 7.2.34
+-- =========================================================================
+-- AIraut Database Schema & Seed Data
+-- Passwords for all default accounts below are: password123
+-- (Hashed securely using PASSWORD_DEFAULT / bcrypt)
+-- =========================================================================
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS submission_files;
+DROP TABLE IF EXISTS submissions;
+DROP TABLE IF EXISTS activities;
+DROP TABLE IF EXISTS faculty_cohorts;
+DROP TABLE IF EXISTS faculty;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS cohorts;
+DROP TABLE IF EXISTS programmes;
+DROP TABLE IF EXISTS institutions;
+DROP TABLE IF EXISTS users;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+SET FOREIGN_KEY_CHECKS = 1;
 
---
--- Database: `AIRaut'
-
--- --------------------------------------------------------
-
---
--- Table structure for table `activities`
---
-
-CREATE TABLE `activities` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `cohort_id` bigint(20) UNSIGNED NOT NULL,
-  `module_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `title` varchar(250) NOT NULL,
-  `description` text DEFAULT NULL,
-  `activity_type` varchar(100) DEFAULT NULL,
-  `question` text DEFAULT NULL,
-  `status` enum('active','draft','inactive') NOT NULL DEFAULT 'draft',
-  `due_at` datetime DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 1. USERS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('student', 'faculty', 'institution', 'admin') NOT NULL,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `activity_development_areas`
---
-
-CREATE TABLE `activity_development_areas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `activity_id` bigint(20) UNSIGNED NOT NULL,
-  `development_area_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+-- -------------------------------------------------------------------------
+-- 2. INSTITUTIONS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE institutions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    institution_code VARCHAR(100) NOT NULL UNIQUE,
+    contact_email VARCHAR(255) NOT NULL,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `cohorts`
---
-
-CREATE TABLE `cohorts` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `institution_id` bigint(20) UNSIGNED NOT NULL,
-  `programme_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(150) NOT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `status` enum('upcoming','active','completed','inactive') NOT NULL DEFAULT 'upcoming',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 3. PROGRAMMES TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE programmes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    institution_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    programme_code VARCHAR(100) NOT NULL,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `development_areas`
---
-
-CREATE TABLE `development_areas` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `code` varchar(50) NOT NULL,
-  `description` text DEFAULT NULL,
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 4. COHORTS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE cohorts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    institution_id INT NOT NULL,
+    programme_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE,
+    FOREIGN KEY (programme_id) REFERENCES programmes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `faculty`
---
-
-CREATE TABLE `faculty` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `institution_id` bigint(20) UNSIGNED NOT NULL,
-  `faculty_code` varchar(50) NOT NULL,
-  `designation` varchar(150) DEFAULT NULL,
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 5. STUDENTS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    institution_id INT NOT NULL,
+    cohort_id INT NOT NULL,
+    student_code VARCHAR(100) NOT NULL UNIQUE,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE,
+    FOREIGN KEY (cohort_id) REFERENCES cohorts(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `faculty_cohorts`
---
-
-CREATE TABLE `faculty_cohorts` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `faculty_id` bigint(20) UNSIGNED NOT NULL,
-  `cohort_id` bigint(20) UNSIGNED NOT NULL,
-  `assigned_at` timestamp NOT NULL DEFAULT current_timestamp()
+-- -------------------------------------------------------------------------
+-- 6. FACULTY TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE faculty (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    institution_id INT NOT NULL,
+    faculty_code VARCHAR(100) NOT NULL UNIQUE,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `institutions`
---
-
-CREATE TABLE `institutions` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(200) NOT NULL,
-  `code` varchar(50) NOT NULL,
-  `contact_name` varchar(150) DEFAULT NULL,
-  `contact_email` varchar(190) DEFAULT NULL,
-  `status` enum('active','onboarding','inactive') NOT NULL DEFAULT 'onboarding',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 7. FACULTY_COHORTS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE faculty_cohorts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    faculty_id INT NOT NULL,
+    cohort_id INT NOT NULL,
+    FOREIGN KEY (faculty_id) REFERENCES faculty(id) ON DELETE CASCADE,
+    FOREIGN KEY (cohort_id) REFERENCES cohorts(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `modules`
---
-
-CREATE TABLE `modules` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `programme_id` bigint(20) UNSIGNED NOT NULL,
-  `module_number` int(10) UNSIGNED NOT NULL,
-  `title` varchar(200) NOT NULL,
-  `status` enum('active','draft','inactive') NOT NULL DEFAULT 'draft',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 8. ACTIVITIES TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE activities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `programmes`
---
-
-CREATE TABLE `programmes` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(200) NOT NULL,
-  `code` varchar(50) NOT NULL,
-  `status` enum('active','draft','inactive') NOT NULL DEFAULT 'draft',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 9. SUBMISSIONS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE submissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    activity_id INT NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    status ENUM('submitted', 'reviewed') DEFAULT 'submitted',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `reviews`
---
-
-CREATE TABLE `reviews` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `submission_id` bigint(20) UNSIGNED NOT NULL,
-  `faculty_id` bigint(20) UNSIGNED NOT NULL,
-  `score` decimal(4,2) NOT NULL,
-  `feedback` text NOT NULL,
-  `observation` text DEFAULT NULL,
-  `reviewed_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `students`
---
-
-CREATE TABLE `students` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `institution_id` bigint(20) UNSIGNED NOT NULL,
-  `cohort_id` bigint(20) UNSIGNED NOT NULL,
-  `student_code` varchar(50) NOT NULL,
-  `course` varchar(150) DEFAULT NULL,
-  `academic_year` varchar(50) DEFAULT NULL,
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+-- -------------------------------------------------------------------------
+-- 10. REVIEWS TABLE
+-- -------------------------------------------------------------------------
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    submission_id INT NOT NULL,
+    faculty_id INT NOT NULL,
+    feedback TEXT,
+    status ENUM('approved', 'revision_required') DEFAULT 'approved',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
+    FOREIGN KEY (faculty_id) REFERENCES faculty(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `submissions`
---
+-- =========================================================================
+-- SEED DATA (Password for all accounts is: password123)
+-- Hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
+-- =========================================================================
 
-CREATE TABLE `submissions` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `activity_id` bigint(20) UNSIGNED NOT NULL,
-  `student_id` bigint(20) UNSIGNED NOT NULL,
-  `response` longtext NOT NULL,
-  `status` enum('draft','submitted','reviewed') NOT NULL DEFAULT 'submitted',
-  `submitted_at` datetime DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- 1. Admin User
+INSERT INTO users (id, name, email, password_hash, role, status) VALUES
+(1, 'System Administrator', 'admin@airaut.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'active');
 
--- --------------------------------------------------------
+-- 2. Institution User
+INSERT INTO users (id, name, email, password_hash, role, status) VALUES
+(2, 'Institution Manager', 'institution@airaut.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'institution', 'active');
 
---
--- Table structure for table `submission_files`
---
+-- 3. Faculty User
+INSERT INTO users (id, name, email, password_hash, role, status) VALUES
+(3, 'Dr. John Faculty', 'faculty@airaut.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'faculty', 'active');
 
-CREATE TABLE `submission_files` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `submission_id` bigint(20) UNSIGNED NOT NULL,
-  `original_name` varchar(255) NOT NULL,
-  `stored_name` varchar(255) NOT NULL,
-  `file_path` varchar(500) NOT NULL,
-  `mime_type` varchar(150) NOT NULL,
-  `file_size` bigint(20) UNSIGNED NOT NULL,
-  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- 4. Student User
+INSERT INTO users (id, name, email, password_hash, role, status) VALUES
+(4, 'Jane Student', 'student@airaut.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'active');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `users`
---
+-- Sample Institution & Relationships
+INSERT INTO institutions (id, name, institution_code, contact_email, status) VALUES
+(1, 'AIraut University', 'AIR001', 'contact@airaut.com', 'active');
 
-CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `email` varchar(190) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `role` enum('student','faculty','institution','admin') NOT NULL,
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO programmes (id, institution_id, name, programme_code, status) VALUES
+(1, 1, 'Computer Science AI', 'CS-AI-01', 'active');
 
---
--- Dumping data for table `users`
---
+INSERT INTO cohorts (id, institution_id, programme_id, name, status) VALUES
+(1, 1, 1, 'Batch 2026', 'active');
 
-INSERT INTO `users` (`id`, `name`, `email`, `password_hash`, `role`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Aishwarya Raut', 'connect.aishwaryaraut@gmail.com', '$2y$10$e.wXq.f2m7lP8zQ1B5nC8O.7R4tY6uI9oP2aS4dF6gH8jK0lM2nO4', 'admin', 'active', '2026-10-18 15:48:22', '2026-10-18 18:35:25'),
-(23, 'Student1', 'student1@gmail.com', '$2y$12$SXdD25dVQkNQ6Mpp88IczuTid3u/DowLrTOuPpPt4Nk9Rv4rCz5rK', 'student', 'active', '2026-10-18 18:15:48', '2026-10-18 18:15:48');
+INSERT INTO students (id, user_id, institution_id, cohort_id, student_code, status) VALUES
+(1, 4, 1, 1, 'STU001', 'active');
 
---
--- Indexes for dumped tables
---
+INSERT INTO faculty (id, user_id, institution_id, faculty_code, status) VALUES
+(1, 3, 1, 'FAC001', 'active');
 
---
--- Indexes for table `activities`
---
-ALTER TABLE `activities`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_activities_cohort` (`cohort_id`),
-  ADD KEY `idx_activities_module` (`module_id`),
-  ADD KEY `idx_activities_status` (`status`);
-
---
--- Indexes for table `activity_development_areas`
---
-ALTER TABLE `activity_development_areas`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_activity_development_area` (`activity_id`,`development_area_id`),
-  ADD KEY `fk_activity_development_area_dimension` (`development_area_id`);
-
---
--- Indexes for table `cohorts`
---
-ALTER TABLE `cohorts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_cohorts_institution` (`institution_id`),
-  ADD KEY `idx_cohorts_programme` (`programme_id`),
-  ADD KEY `idx_cohorts_status` (`status`);
-
---
--- Indexes for table `development_areas`
---
-ALTER TABLE `development_areas`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`),
-  ADD UNIQUE KEY `code` (`code`);
-
---
--- Indexes for table `faculty`
---
-ALTER TABLE `faculty`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`),
-  ADD UNIQUE KEY `faculty_code` (`faculty_code`),
-  ADD KEY `idx_faculty_institution` (`institution_id`);
-
---
--- Indexes for table `faculty_cohorts`
---
-ALTER TABLE `faculty_cohorts`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_faculty_cohort` (`faculty_id`,`cohort_id`),
-  ADD KEY `idx_fc_cohort` (`cohort_id`),
-  ADD KEY `idx_fc_faculty` (`faculty_id`);
-
---
--- Indexes for table `institutions`
---
-ALTER TABLE `institutions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `code` (`code`);
-
---
--- Indexes for table `modules`
---
-ALTER TABLE `modules`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_module_number_per_programme` (`programme_id`,`module_number`),
-  ADD KEY `idx_modules_programme` (`programme_id`);
-
---
--- Indexes for table `programmes`
---
-ALTER TABLE `programmes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `code` (`code`);
-
---
--- Indexes for table `reviews`
---
-ALTER TABLE `reviews`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `submission_id` (`submission_id`),
-  ADD KEY `idx_reviews_faculty` (`faculty_id`),
-  ADD KEY `idx_reviews_reviewed_at` (`reviewed_at`);
-
---
--- Indexes for table `students`
---
-ALTER TABLE `students`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`),
-  ADD UNIQUE KEY `student_code` (`student_code`),
-  ADD KEY `idx_students_institution` (`institution_id`),
-  ADD KEY `idx_students_cohort` (`cohort_id`),
-  ADD KEY `idx_students_status` (`status`);
-
---
--- Indexes for table `submissions`
---
-ALTER TABLE `submissions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_submission_student_activity` (`activity_id`,`student_id`),
-  ADD KEY `idx_submissions_student` (`student_id`),
-  ADD KEY `idx_submissions_activity` (`activity_id`),
-  ADD KEY `idx_submissions_status` (`status`);
-
---
--- Indexes for table `submission_files`
---
-ALTER TABLE `submission_files`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_submission_file` (`submission_id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `activities`
---
-ALTER TABLE `activities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `activity_development_areas`
---
-ALTER TABLE `activity_development_areas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `cohorts`
---
-ALTER TABLE `cohorts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `development_areas`
---
-ALTER TABLE `development_areas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `faculty`
---
-ALTER TABLE `faculty`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `faculty_cohorts`
---
-ALTER TABLE `faculty_cohorts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `institutions`
---
-ALTER TABLE `institutions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `modules`
---
-ALTER TABLE `modules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `programmes`
---
-ALTER TABLE `programmes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `reviews`
---
-ALTER TABLE `reviews`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `students`
---
-ALTER TABLE `students`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `submissions`
---
-ALTER TABLE `submissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `submission_files`
---
-ALTER TABLE `submission_files`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `activities`
---
-ALTER TABLE `activities`
-  ADD CONSTRAINT `fk_activities_cohort` FOREIGN KEY (`cohort_id`) REFERENCES `cohorts` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_activities_module` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `activity_development_areas`
---
-ALTER TABLE `activity_development_areas`
-  ADD CONSTRAINT `fk_activity_development_area_activity` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_activity_development_area_dimension` FOREIGN KEY (`development_area_id`) REFERENCES `development_areas` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `cohorts`
---
-ALTER TABLE `cohorts`
-  ADD CONSTRAINT `fk_cohorts_institution` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_cohorts_programme` FOREIGN KEY (`programme_id`) REFERENCES `programmes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `faculty`
---
-ALTER TABLE `faculty`
-  ADD CONSTRAINT `fk_faculty_institution` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_faculty_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `faculty_cohorts`
---
-ALTER TABLE `faculty_cohorts`
-  ADD CONSTRAINT `fk_faculty_cohorts_cohort` FOREIGN KEY (`cohort_id`) REFERENCES `cohorts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_faculty_cohorts_faculty` FOREIGN KEY (`faculty_id`) REFERENCES `faculty` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `modules`
---
-ALTER TABLE `modules`
-  ADD CONSTRAINT `fk_modules_programme` FOREIGN KEY (`programme_id`) REFERENCES `programmes` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `reviews`
---
-ALTER TABLE `reviews`
-  ADD CONSTRAINT `fk_reviews_faculty` FOREIGN KEY (`faculty_id`) REFERENCES `faculty` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_reviews_submission` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `students`
---
-ALTER TABLE `students`
-  ADD CONSTRAINT `fk_students_cohort` FOREIGN KEY (`cohort_id`) REFERENCES `cohorts` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_students_institution` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_students_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `submissions`
---
-ALTER TABLE `submissions`
-  ADD CONSTRAINT `fk_submissions_activity` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_submissions_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `submission_files`
---
-ALTER TABLE `submission_files`
-  ADD CONSTRAINT `fk_submission_files_submission` FOREIGN KEY (`submission_id`) REFERENCES `submissions` (`id`) ON DELETE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+INSERT INTO faculty_cohorts (faculty_id, cohort_id) VALUES
+(1, 1);
